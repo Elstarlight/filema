@@ -1,9 +1,10 @@
 class AppRoutes { 
-  static const String tiket = "/tiket";
-  static const String dashboard = "/dashboard";
-  static const String profile = "/profile";
-  static const String splashscreen = "/splashscreen";
-  static const String filmdetail = "/filmdetail";
-  static const String bioskop = "/bioskop";
-  static const String auth = "/auth";
+  static String tiket = "/tiket";
+  static String dashboard = "/dashboard";
+  static String profile = "/profile";
+  static String splashscreen = "/splashscreen";
+  static String filmdetail = "/filmdetail";
+  static String bioskop = "/bioskop";
+  static String auth = "/auth";
+  static const home = '/';
 }
