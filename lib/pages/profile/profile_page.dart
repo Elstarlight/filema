@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:filema/controllers/profile_controller.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
+
+  final ProfileController controller = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -15,83 +19,84 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           children: [
 
-            // ================= FOTO PROFILE =================
             CircleAvatar(
               radius: 50,
               backgroundColor: Colors.deepPurple,
-              child: Icon(
-                Icons.person,
-                size: 60,
-                color: Colors.white,
-              ),
+              child: Icon(Icons.person, size: 60, color: Colors.white),
             ),
 
             SizedBox(height: 16),
 
-            Text(
-              "Nathanael",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Obx(() => Text(
+              controller.name.value,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            )),
 
             SizedBox(height: 4),
 
-            Text(
-              "nathanael@email.com",
+            Obx(() => Text(
+              controller.email.value,
               style: TextStyle(color: Colors.grey),
-            ),
+            )),
 
             SizedBox(height: 24),
 
-            // ================= CARD DATA PROFILE =================
+            // ================= DATA PROFILE =================
             Card(
-              elevation: 2,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
                 children: [
-                  ListTile(
+                  Obx(() => ListTile(
                     leading: Icon(Icons.person),
                     title: Text("Nama"),
-                    subtitle: Text("Nathanael"),
-                  ),
+                    subtitle: Text(controller.name.value),
+                  )),
                   Divider(height: 1),
-                  ListTile(
+                  Obx(() => ListTile(
                     leading: Icon(Icons.email),
                     title: Text("Email"),
-                    subtitle: Text("nathanael@email.com"),
-                  ),
+                    subtitle: Text(controller.email.value),
+                  )),
                   Divider(height: 1),
-                  ListTile(
+                  Obx(() => ListTile(
                     leading: Icon(Icons.phone),
                     title: Text("No. Telepon"),
-                    subtitle: Text("08xxxxxxxxxx"),
-                  ),
+                    subtitle: Text(controller.phone.value),
+                  )),
                 ],
               ),
             ),
 
             SizedBox(height: 24),
 
-            // ================= BUTTON MENU =================
+            // ================= MENU =================
             Card(
-              elevation: 2,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
                 children: [
 
+                  // CRUD FILM (ADMIN)
+                  Obx(() => controller.isAdmin.value
+                      ? ListTile(
+                          leading: Icon(Icons.movie_creation),
+                          title: Text("CRUD Film"),
+                          subtitle: Text("Kelola data film"),
+                          trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                          onTap: controller.goToCrudFilm,
+                        )
+                      : SizedBox()
+                  ),
+
+                  Divider(height: 1),
+
                   ListTile(
                     leading: Icon(Icons.settings),
                     title: Text("Pengaturan"),
-                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
-                    onTap: () {
-                      // TODO: ke halaman setting
-                    },
+                    onTap: controller.goToSettings,
                   ),
 
                   Divider(height: 1),
@@ -99,23 +104,15 @@ class ProfilePage extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.info_outline),
                     title: Text("Tentang Aplikasi"),
-                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
-                    onTap: () {
-                      // TODO: ke halaman about
-                    },
+                    onTap: controller.goToAbout,
                   ),
 
                   Divider(height: 1),
 
                   ListTile(
                     leading: Icon(Icons.logout, color: Colors.red),
-                    title: Text(
-                      "Logout",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    onTap: () {
-                      // TODO: logout
-                    },
+                    title: Text("Logout", style: TextStyle(color: Colors.red)),
+                    onTap: controller.logout,
                   ),
                 ],
               ),
