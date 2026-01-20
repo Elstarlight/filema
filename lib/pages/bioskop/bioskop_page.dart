@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'bioskop_mobile.dart';
+import 'bioskop_widescreen.dart';
 
 class BioskopPage extends StatelessWidget {
-  BioskopPage({super.key});
+  const BioskopPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Bioskop"),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text(
-          "Ini Halaman Bioskop",
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // 📱 MOBILE
+        if (constraints.maxWidth < 800) {
+          return const BioskopMobile();
+        }
+
+        // 🖥 TABLET / DESKTOP
+        return const BioskopWidescreen();
+      },
     );
   }
 }
