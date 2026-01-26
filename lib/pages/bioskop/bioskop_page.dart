@@ -11,7 +11,7 @@ class BioskopPage extends StatelessWidget {
       builder: (context, constraints) {
         // 📱 MOBILE
         if (constraints.maxWidth < 800) {
-          return const BioskopMobile();
+          return BioskopMobile();
         }
 
         // 🖥 TABLET / DESKTOP

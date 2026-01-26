@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
-class BioskopMobile extends StatefulWidget {
-  const BioskopMobile({super.key});
+class BioskopMobile extends StatelessWidget {
+  BioskopMobile({super.key});
 
-  @override
-  State<BioskopMobile> createState() => _BioskopMobileState();
-}
-
-class _BioskopMobileState extends State<BioskopMobile> {
   // 🎬 Data bioskop
   final List<String> bioskopList = [
     'KLATEN TOWN SQUARE XXI',
@@ -22,20 +17,16 @@ class _BioskopMobileState extends State<BioskopMobile> {
     'GALAXY MALL XXI',
   ];
 
-  // ⭐ Status favorit
-  late List<bool> favoriteList;
-
-  @override
-  void initState() {
-    super.initState();
-    favoriteList = List.generate(bioskopList.length, (_) => false);
-  }
+  // ⭐ State favorit (di luar widget lifecycle)
+  final ValueNotifier<List<bool>> favoriteList =
+      ValueNotifier<List<bool>>(List.generate(10, (_) => false));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
 
+      // 🔝 APP BAR
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -69,10 +60,11 @@ class _BioskopMobileState extends State<BioskopMobile> {
         ],
       ),
 
+      // 📄 BODY
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 📍 Lokasi
+          // 📍 LOKASI
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
@@ -93,33 +85,39 @@ class _BioskopMobileState extends State<BioskopMobile> {
 
           // 🎬 LIST BIOSKOP
           Expanded(
-            child: ListView.separated(
-              itemCount: bioskopList.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: IconButton(
-                    icon: Icon(
-                      favoriteList[index]
-                          ? Icons.star
-                          : Icons.star_border,
-                      color: favoriteList[index]
-                          ? Colors.orange
-                          : Colors.grey,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        favoriteList[index] = !favoriteList[index];
-                      });
-                    },
-                  ),
-                  title: Text(
-                    bioskopList[index],
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () {
-                    debugPrint('Klik bioskop: ${bioskopList[index]}');
+            child: ValueListenableBuilder<List<bool>>(
+              valueListenable: favoriteList,
+              builder: (context, favorites, _) {
+                return ListView.separated(
+                  itemCount: bioskopList.length,
+                  separatorBuilder: (_, __) => const Divider(height: 1),
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: IconButton(
+                        icon: Icon(
+                          favorites[index]
+                              ? Icons.star
+                              : Icons.star_border,
+                          color: favorites[index]
+                              ? Colors.orange
+                              : Colors.grey,
+                        ),
+                        onPressed: () {
+                          final newFavorites = List<bool>.from(favorites);
+                          newFavorites[index] = !newFavorites[index];
+                          favoriteList.value = newFavorites;
+                        },
+                      ),
+                      title: Text(
+                        bioskopList[index],
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () {
+                        debugPrint(
+                            'Klik bioskop: ${bioskopList[index]}');
+                      },
+                    );
                   },
                 );
               },
