@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "189863131384",
+    "project_id": "filema-57c3b",
+    "storage_bucket": "filema-57c3b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:189863131384:android:fc39340a699dbc36bce30d",
+        "android_client_info": {
+          "package_name": "com.example.filema"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZv8wKMWEyqmAHUjiVu58HDHZAnES1DBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

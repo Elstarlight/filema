@@ -7,4 +7,5 @@ class AppRoutes {
   static String bioskop = "/bioskop";
   static String auth = "/auth";
   static const home = '/';
+  static const crudFilm = '/crud-film';
 }
