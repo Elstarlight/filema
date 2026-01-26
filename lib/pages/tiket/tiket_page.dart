@@ -1,60 +1,48 @@
+import 'package:filema/helper/local_ticket_service.dart';
 import 'package:flutter/material.dart';
 
-class TiketPage extends StatelessWidget {
-  const TiketPage({super.key});
+class TicketPage extends StatefulWidget {
+  const TicketPage({super.key});
+
+  @override
+  State<TicketPage> createState() => _TicketPageState();
+}
+
+class _TicketPageState extends State<TicketPage> {
+  List<Map<String, dynamic>> tickets = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTickets();
+  }
+
+  Future<void> _loadTickets() async {
+    final data = await LocalTicketService.getTickets();
+    setState(() => tickets = data.reversed.toList());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tiket'),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-
-          // Tab sederhana
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text(
-                'Tiket Aktif',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              SizedBox(width: 20),
-              Text(
-                'Daftar Transaksi',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 50),
-
-          // Konten kosong
-          Icon(
-            Icons.confirmation_number_outlined,
-            size: 80,
-            color: Colors.grey,
-          ),
-          const SizedBox(height: 16),
-          const Text(
-            'Nonton Film Yuk!',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Belum ada tiket.',
-            style: TextStyle(color: Colors.grey),
-          ),
-          const SizedBox(height: 20),
-
-        ],
-      ),
+      appBar: AppBar(title: const Text('Tiket Saya')),
+      body: tickets.isEmpty
+          ? const Center(child: Text('Belum ada tiket.'))
+          : ListView.builder(
+              itemCount: tickets.length,
+              itemBuilder: (context, i) {
+                final t = tickets[i];
+                return ListTile(
+                  leading: const Icon(Icons.confirmation_num_outlined),
+                  title: Text(t['title']),
+                  subtitle: Text('Rp${t['price']}'),
+                  trailing: Text(
+                    t['purchasedAt'].toString().split('T').first,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                );
+              },
+            ),
     );
   }
 }

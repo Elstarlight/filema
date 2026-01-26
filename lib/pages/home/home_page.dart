@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
   final List<Widget> pages = [
     DashboardPage(),
     BioskopPage(),
-    TiketPage(),
+    TicketPage(),
     ProfilePage(),
   ];
 
